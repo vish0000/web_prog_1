@@ -6,6 +6,7 @@ from flask_login import LoginManager
 import logging
 from logging.handlers import SMTPHandler
 from logging.handlers import RotatingFileHandler
+from flask_bootstrap import Bootstrap
 import os
 
 
@@ -15,6 +16,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
+bootstrap = Bootstrap(app)
 
 from app import routes, models, errors
 
