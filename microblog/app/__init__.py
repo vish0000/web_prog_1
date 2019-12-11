@@ -23,7 +23,7 @@ moment = Moment(app)
 mail = Mail(app)
 
 from app import routes, models, errors
-
+'''
 if not app.debug:
     if app.config['MAIL_SERVER']:
         auth = None
@@ -51,3 +51,4 @@ if not app.debug:
 
     app.logger.setLevel(logging.INFO)
     app.logger.info('Microblog startup')
+'''
