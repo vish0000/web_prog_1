@@ -16,6 +16,10 @@ from app.models import Post
 from app.forms import ResetPasswordRequestForm
 from app.email import send_password_reset_email
 from app.forms import ResetPasswordForm
+from app.models import Comment
+from app.forms import CommentForm
+
+
 
 
 @app.before_request
@@ -183,3 +187,26 @@ def reset_password(token):
         flash('Your password has been reset.')
         return redirect(url_for('login'))
     return render_template('reset_password.html', form=form)
+
+@app.route('/postcomment/<postid>/<username>', methods=['GET', 'POST'])
+@login_required
+def postcomment(postid,username):
+    form = CommentForm()
+    
+    if form.validate_on_submit():
+        comment = Comment(body=form.comment.data, post_id=postid, commented=current_user)
+        db.session.add(comment)
+        db.session.commit()
+        flash('Your comment is now live!')
+        return redirect(url_for('index'))
+   
+    post = Post.query.filter_by(id=postid).first_or_404()
+    page = request.args.get('page', 1, type=int)
+    comments = post.comments.order_by(Comment.timestamp.desc())
+        
+    return render_template("comment.html", title='comment', post = post,comments = comments,form= form)
+
+    
+   
+
+
